@@ -1,0 +1,47 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class DestroyAstoroid : MonoBehaviour
+{
+  public GameObject playerExplosion;
+  public GManager gameController;
+  public int NumScore;
+    
+    void Start() {
+     GameObject gameControllerObject= GameObject.FindGameObjectWithTag("GameController");
+
+     if(gameControllerObject != null)
+		{
+		 gameController = gameControllerObject.GetComponent<GManager>();
+		}
+	 if(gameControllerObject == null)
+		{
+		 Debug.Log("Cannot find 'GameController' script");
+		}
+	}
+
+	
+	void OnTriggerEnter(Collider other)
+	{
+       	 
+       if(other.gameObject.CompareTag("Bolt"))
+		{
+		    GetComponent<AudioSource>().Play(); 
+           Instantiate(playerExplosion ,transform.position, transform.rotation);
+          
+		}
+
+        if(other.gameObject.CompareTag("Player"))
+		{
+		    GetComponent<AudioSource>().Play(); 
+           Instantiate(playerExplosion ,transform.position, transform.rotation);  
+		   gameController.GameOver();
+		}
+      gameController.AddScore(NumScore);
+      Destroy (gameObject);    // ลบตัวเอง   gameObject เราพิมพ์เดี่ยวๆ  หมายถึงทำลายตัวเอง
+      Destroy (other.gameObject); //ลบของที่ชน
+	}
+
+
+}
